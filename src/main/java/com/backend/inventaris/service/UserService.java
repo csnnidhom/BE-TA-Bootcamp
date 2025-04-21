@@ -1,7 +1,6 @@
 package com.backend.inventaris.service;
 
 import com.backend.inventaris.config.JwtConfig;
-import com.backend.inventaris.dto.ResponseUserDTO;
 import com.backend.inventaris.dto.validation.ValLoginDTO;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.User;

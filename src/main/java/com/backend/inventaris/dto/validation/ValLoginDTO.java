@@ -15,7 +15,7 @@ public class ValLoginDTO implements Serializable {
     @NotEmpty
     @NotNull
     @NotBlank
-    private String email;
+    private String username;
 
     @NotEmpty
     @NotNull
