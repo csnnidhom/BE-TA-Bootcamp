@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
 //            return GlobalResponse.loginProblem("AUTH00CC002",request);
 //        }
 
-        if(!BcryptImpl.verifyHash((user.getEmail()+user.getPassword()),userNext.getPassword())){
+        if(!BcryptImpl.verifyHash((user.getUsername()+user.getPassword()),userNext.getPassword())){
             return GlobalResponse.loginProblem("AUTH00CC003",request);
         }
         Map<String,Object> m1 = new HashMap<>();
@@ -65,6 +65,7 @@ public class UserService implements UserDetailsService {
         m.put("token",token);
         m.put("username", userNext.getUsername());
         m.put("email",userNext.getEmail());
+        m.put("role", userNext.getRole());
         return GlobalResponse.dataDitemukan(m,request);
     }
 
