@@ -1,6 +1,6 @@
 package com.backend.inventaris.security;
 
-import com.juaracoding.config.JwtConfig;
+import com.backend.inventaris.config.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -19,8 +19,6 @@ public class JwtUtility {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", claims.get("id"));
         map.put("username", claims.getSubject());
-        map.put("noHp", claims.get("phn"));
-        map.put("namaLengkap", claims.get("nl"));
         map.put("email", claims.get("ml"));
 
         return map;
