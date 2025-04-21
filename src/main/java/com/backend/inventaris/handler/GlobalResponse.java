@@ -101,7 +101,7 @@ public class GlobalResponse {
                 null,null,request);
     }
     public static ResponseEntity<Object> loginProblem(String errorCode,HttpServletRequest request){
-        return new ResponseHandler().handleResponse("Email / Password Salah",
+        return new ResponseHandler().handleResponse("Username / Password Salah",
                 HttpStatus.BAD_REQUEST,
                 null,errorCode,request);
     }

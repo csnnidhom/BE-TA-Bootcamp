@@ -24,7 +24,6 @@ public class ResponseHandler {
         map.put("success",!status.isError());
         if(errorCode!=null) {// ini tandanya error !!
             map.put("error-code",errorCode);
-            map.put("path",request.getPathInfo());
         }
         return new ResponseEntity<>(map,status);
     }
@@ -42,7 +41,6 @@ public class ResponseHandler {
         map.put("success",!status.isError());
         if(errorCode!=null) {// ini tandanya error !!
             map.put("error-code",errorCode);
-            map.put("path",request.getContextPath());
         }
         return new ResponseEntity<>(map,status);
     }
