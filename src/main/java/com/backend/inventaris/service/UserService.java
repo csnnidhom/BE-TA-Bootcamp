@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
         m.put("username", userNext.getUsername());
         m.put("email",userNext.getEmail());
         m.put("role", userNext.getRole());
-        return GlobalResponse.dataDitemukan(m,request);
+        return GlobalResponse.dataWasFound(m,request);
     }
 
 //    public ResponseEntity<Object> regis(User user , HttpServletRequest request){

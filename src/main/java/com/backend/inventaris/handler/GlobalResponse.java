@@ -11,13 +11,13 @@ import java.io.IOException;
 
 public class GlobalResponse {
 
-    public static ResponseEntity<Object> dataGagalDisimpan(String errorCode,HttpServletRequest request){
+    public static ResponseEntity<Object> failedToSave(String errorCode,HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Gagal Disimpan",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 null,errorCode,request);
     }
 
-    public static ResponseEntity<Object> dataBerhasilDisimpan(HttpServletRequest request){
+    public static ResponseEntity<Object> savedSuccessfully(HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Berhasil Disimpan",
                 HttpStatus.CREATED,
                 null,null,request);
@@ -35,31 +35,31 @@ public class GlobalResponse {
                 null,errorCode,request);
     }
 
-    public static ResponseEntity<Object> dataTidakDitemukan(String errorCode,HttpServletRequest request){
+    public static ResponseEntity<Object> dataNotFound(String errorCode,HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Tidak Ditemukan",
                 HttpStatus.BAD_REQUEST,
                 null,errorCode,request);
     }
 
-    public static ResponseEntity<Object> dataGagalDiubah(String errorCode,HttpServletRequest request){
+    public static ResponseEntity<Object> updateFailed(String errorCode,HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Gagal Diubah",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 null,errorCode,request);
     }
 
-    public static ResponseEntity<Object> dataBerhasilDiubah(HttpServletRequest request){
+    public static ResponseEntity<Object> updateSuccessfully(HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Berhasil Diubah",
                 HttpStatus.OK,
                 null,null,request);
     }
 
-    public static ResponseEntity<Object> dataGagalDihapus(String errorCode, HttpServletRequest request){
+    public static ResponseEntity<Object> deletedFailed(String errorCode, HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Gagal Dihapus",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 null,errorCode,request);
     }
 
-    public static ResponseEntity<Object> dataBerhasilDihapus(HttpServletRequest request){
+    public static ResponseEntity<Object> deletedSuccessfully(HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Berhasil Dihapus",
                 HttpStatus.OK,
                 null,null,request);
@@ -71,7 +71,7 @@ public class GlobalResponse {
                 null,errorCode,request);
     }
 
-    public static ResponseEntity<Object> dataDitemukan(Object object,HttpServletRequest request){
+    public static ResponseEntity<Object> dataWasFound(Object object,HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Ditemukan",
                 HttpStatus.OK,
                 object,null,request);
