@@ -3,7 +3,7 @@ package com.backend.inventaris.service;
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
 import com.backend.inventaris.dto.FindAllDTO;
-import com.backend.inventaris.dto.validation.ValWarehouseDTO;
+import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Warehouse;
 import com.backend.inventaris.repo.WarehouseRepo;
@@ -120,8 +120,8 @@ public class WarehouseService implements IService<Warehouse> {
         return lt;
     }
 
-    public Warehouse converToEntity(ValWarehouseDTO valWarehouseDTO) {
-        Warehouse warehouse = modelMapper.map(valWarehouseDTO, Warehouse.class);
+    public Warehouse converToEntity(ValDataMasterDTO valDataMasterDTO) {
+        Warehouse warehouse = modelMapper.map(valDataMasterDTO, Warehouse.class);
         return warehouse;
     }
 }

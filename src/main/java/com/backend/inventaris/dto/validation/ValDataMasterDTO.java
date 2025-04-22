@@ -2,7 +2,7 @@ package com.backend.inventaris.dto.validation;
 
 import jakarta.validation.constraints.Pattern;
 
-public class ValWarehouseDTO {
+public class ValDataMasterDTO {
 
     @Pattern(regexp = "^[\\w\\s]{5,100}$",message = "Alfanumerik dengan spasi min 5 maks 100 karakter")
     private String name;

@@ -1,8 +1,7 @@
 package com.backend.inventaris.controller;
 
 import com.backend.inventaris.config.OtherConfig;
-import com.backend.inventaris.dto.validation.ValWarehouseDTO;
-import com.backend.inventaris.model.Warehouse;
+import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.service.WarehouseService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -21,8 +20,8 @@ public class WarehouseController {
     private WarehouseService warehouseService;
 
     @PostMapping("/create")
-    public ResponseEntity<Object> create(@Valid @RequestBody ValWarehouseDTO valWarehouseDTO, HttpServletRequest request) {
-        return warehouseService.create(warehouseService.converToEntity(valWarehouseDTO), request);
+    public ResponseEntity<Object> create(@Valid @RequestBody ValDataMasterDTO valDataMasterDTO, HttpServletRequest request) {
+        return warehouseService.create(warehouseService.converToEntity(valDataMasterDTO), request);
     }
 
     @GetMapping("/all")
@@ -33,14 +32,13 @@ public class WarehouseController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id,
-                                         @Valid @RequestBody ValWarehouseDTO valWarehouseDTO,
+                                         @Valid @RequestBody ValDataMasterDTO valDataMasterDTO,
                                          HttpServletRequest request) {
-        return warehouseService.update(id, warehouseService.converToEntity(valWarehouseDTO), request);
+        return warehouseService.update(id, warehouseService.converToEntity(valDataMasterDTO), request);
     }
 
     @PutMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id,
-                                         @Valid @RequestBody ValWarehouseDTO valWarehouseDTO,
                                          HttpServletRequest request) {
         return warehouseService.delete(id, request);
     }

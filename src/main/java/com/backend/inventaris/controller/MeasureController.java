@@ -2,7 +2,7 @@ package com.backend.inventaris.controller;
 
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.dto.validation.ValDataMasterDTO;
-import com.backend.inventaris.service.PeriodeService;
+import com.backend.inventaris.service.MeasureService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,34 +13,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/periode")
-public class PeriodeController {
-    
+@RequestMapping("/measure")
+public class MeasureController {
     @Autowired
-    private PeriodeService periodeService;
+    private MeasureService measureService;
 
     @PostMapping("/create")
     public ResponseEntity<Object> create(@Valid @RequestBody ValDataMasterDTO valDataMasterDTO, HttpServletRequest request) {
-        return periodeService.create(periodeService.converToEntity(valDataMasterDTO), request);
+        return measureService.create(measureService.converToEntity(valDataMasterDTO), request);
     }
 
     @GetMapping("/all")
     public ResponseEntity<Object> getAllWarehouses(HttpServletRequest request) {
         Pageable pageable = PageRequest.of(0, OtherConfig.getPageDefault(), Sort.by("id"));
-        return periodeService.findAll(pageable,request);
+        return measureService.findAll(pageable,request);
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id,
                                          @Valid @RequestBody ValDataMasterDTO valDataMasterDTO,
                                          HttpServletRequest request) {
-        return periodeService.update(id, periodeService.converToEntity(valDataMasterDTO), request);
+        return measureService.update(id, measureService.converToEntity(valDataMasterDTO), request);
     }
 
     @PutMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id,
-                                         @Valid @RequestBody ValDataMasterDTO valDataMasterDTO,
                                          HttpServletRequest request) {
-        return periodeService.delete(id, request);
+        return measureService.delete(id, request);
     }
 }

@@ -3,11 +3,9 @@ package com.backend.inventaris.service;
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
 import com.backend.inventaris.dto.FindAllDTO;
-import com.backend.inventaris.dto.validation.ValPeriodeDTO;
-import com.backend.inventaris.dto.validation.ValWarehouseDTO;
+import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Periode;
-import com.backend.inventaris.model.Warehouse;
 import com.backend.inventaris.repo.PeriodeRepo;
 import com.backend.inventaris.security.RequestCapture;
 import com.backend.inventaris.util.GlobalFunction;
@@ -124,8 +122,8 @@ public class PeriodeService implements IService<Periode> {
         return lt;
     }
 
-    public Periode converToEntity(ValPeriodeDTO valPeriodeDTO) {
-        Periode periode = modelMapper.map(valPeriodeDTO, Periode.class);
+    public Periode converToEntity(ValDataMasterDTO valDataMasterDTO) {
+        Periode periode = modelMapper.map(valDataMasterDTO, Periode.class);
         return periode;
     }
 }
