@@ -120,16 +120,6 @@ public class WarehouseService implements IService<Warehouse> {
         return lt;
     }
 
-    @Override
-    public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
-        return null;
-    }
-
-    @Override
-    public ResponseEntity<Object> findByParam(Pageable pageable, String columnName, String value, HttpServletRequest request) {
-        return null;
-    }
-
     public Warehouse converToEntity(ValWarehouseDTO valWarehouseDTO) {
         Warehouse warehouse = modelMapper.map(valWarehouseDTO, Warehouse.class);
         return warehouse;
