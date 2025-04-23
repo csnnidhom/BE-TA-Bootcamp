@@ -71,7 +71,7 @@ public class WarehouseService implements IService<Warehouse> {
             warehouseRepo.save(nextWarehouse);
         }catch (Exception e){
             LoggingFile.logException("Warehouse Service","Update failed"+RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
-            return GlobalResponse.updateFailed("WH01CC012",request);
+            return GlobalResponse.failedToUpdate("WH01CC012",request);
         }
         return GlobalResponse.updateSuccessfully(request);
     }

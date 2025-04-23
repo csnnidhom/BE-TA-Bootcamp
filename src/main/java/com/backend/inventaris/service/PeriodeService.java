@@ -73,7 +73,7 @@ public class PeriodeService implements IService<Periode> {
             periodeRepo.save(nextPeriode);
         }catch (Exception e){
             LoggingFile.logException("Periode Service","Update failed"+RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
-            return GlobalResponse.updateFailed("P02CC012",request);
+            return GlobalResponse.failedToUpdate("P02CC012",request);
         }
         return GlobalResponse.updateSuccessfully(request);
     }

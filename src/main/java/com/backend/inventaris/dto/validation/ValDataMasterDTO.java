@@ -1,10 +1,11 @@
 package com.backend.inventaris.dto.validation;
 
+import com.backend.inventaris.util.ConstantsMessage;
 import jakarta.validation.constraints.Pattern;
 
 public class ValDataMasterDTO {
 
-    @Pattern(regexp = "^[\\w\\s]{5,100}$",message = "Alfanumerik dengan spasi min 5 maks 100 karakter")
+    @Pattern(regexp = "^[\\w\\s]{5,100}$",message = ConstantsMessage.VAL_NAME)
     private String name;
 
     public String getName() {

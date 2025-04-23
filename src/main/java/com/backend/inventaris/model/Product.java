@@ -7,17 +7,26 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "measure")
-public class Measure {
+@Table(name = "product")
+public class Product {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", length = 100, nullable = false)
+    @Column(name = "name", length = 50, nullable = false)
     private String name;
 
-    @Column(name = "is_deleted")
+    @ManyToOne
+    @JoinColumn(name = "id_measure",foreignKey = @ForeignKey(name = "fk-to-measure"))
+    private Measure measure;
+
     private Boolean isDeleted=false;
+
+    private Long price;
+
+    @Column(name = "wam_stock")
+    private int wamStock;
 
     @Column(name = "created_by", nullable = false, updatable = false)
     private Long createdBy;
@@ -49,12 +58,36 @@ public class Measure {
         this.name = name;
     }
 
+    public Measure getMeasure() {
+        return measure;
+    }
+
+    public void setMeasure(Measure measure) {
+        this.measure = measure;
+    }
+
     public Boolean getDeleted() {
         return isDeleted;
     }
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
+    }
+
+    public int getWamStock() {
+        return wamStock;
+    }
+
+    public void setWamStock(int wamStock) {
+        this.wamStock = wamStock;
     }
 
     public Long getCreatedBy() {

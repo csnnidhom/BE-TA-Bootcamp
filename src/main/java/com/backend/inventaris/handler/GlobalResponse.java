@@ -41,7 +41,13 @@ public class GlobalResponse {
                 null,errorCode,request);
     }
 
-    public static ResponseEntity<Object> updateFailed(String errorCode,HttpServletRequest request){
+    public static ResponseEntity<Object> dataRelasiNotFound(String errorCode,HttpServletRequest request){
+        return new ResponseHandler().handleResponse("Data Relasi Tidak Ditemukan",
+                HttpStatus.BAD_REQUEST,
+                null,errorCode,request);
+    }
+
+    public static ResponseEntity<Object> failedToUpdate(String errorCode, HttpServletRequest request){
         return new ResponseHandler().handleResponse("Data Gagal Diubah",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 null,errorCode,request);

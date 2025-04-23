@@ -6,7 +6,6 @@ import com.backend.inventaris.dto.FindAllDTO;
 import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Measure;
-import com.backend.inventaris.model.Periode;
 import com.backend.inventaris.repo.MeasureRepo;
 import com.backend.inventaris.security.RequestCapture;
 import com.backend.inventaris.util.GlobalFunction;
@@ -73,7 +72,7 @@ public class MeasureService implements IService<Measure> {
             measureRepo.save(nextMeasure);
         }catch (Exception e){
             LoggingFile.logException("Measure Service","Update failed"+RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
-            return GlobalResponse.updateFailed("M03CC012",request);
+            return GlobalResponse.failedToUpdate("M03CC012",request);
         }
         return GlobalResponse.updateSuccessfully(request);
     }
