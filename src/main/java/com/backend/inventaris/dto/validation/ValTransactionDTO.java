@@ -14,16 +14,12 @@ import java.time.LocalDate;
 
 public class ValTransactionDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @NotNull
     private LocalDate date;
 
-    @NotNull
     private Long price;
 
-    @NotNull
     private Long qty;
 
-    @NotNull
     @JsonProperty("type_transaction")
     private TypeTransaction typeTransaction;
 
@@ -35,9 +31,9 @@ public class ValTransactionDTO {
     @JsonProperty("warehouse")
     private RelWarehouseDTO relWarehouseDTO;
 
-    @NotNull(message = ConstantsMessage.VAL_RELASI)
-    @JsonProperty("periode")
-    private RelPeriodeDTO relPeriodeDTO;
+//    @NotNull(message = ConstantsMessage.VAL_RELASI)
+//    @JsonProperty("periode")
+//    private RelPeriodeDTO relPeriodeDTO;
 
     public LocalDate getDate() {
         return date;
@@ -87,11 +83,11 @@ public class ValTransactionDTO {
         this.relWarehouseDTO = relWarehouseDTO;
     }
 
-    public RelPeriodeDTO getRelPeriodeDTO() {
-        return relPeriodeDTO;
-    }
-
-    public void setRelPeriodeDTO(RelPeriodeDTO relPeriodeDTO) {
-        this.relPeriodeDTO = relPeriodeDTO;
-    }
+//    public RelPeriodeDTO getRelPeriodeDTO() {
+//        return relPeriodeDTO;
+//    }
+//
+//    public void setRelPeriodeDTO(RelPeriodeDTO relPeriodeDTO) {
+//        this.relPeriodeDTO = relPeriodeDTO;
+//    }
 }

@@ -16,14 +16,14 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "date", nullable = false)
+    @Column(name = "date")
     private LocalDate date;
 
-    @Column(name = "price", nullable = false)
+    @Column(name = "price")
     private Long price;
 
-    @Column(name = "qty", nullable = false)
-    private Long qty;
+    @Column(name = "qty")
+    private Integer qty;
 
     @Enumerated(EnumType.STRING)
     private TypeTransaction typeTransaction;
@@ -80,11 +80,11 @@ public class Transaction {
         this.price = price;
     }
 
-    public Long getQty() {
+    public Integer getQty() {
         return qty;
     }
 
-    public void setQty(Long qty) {
+    public void setQty(Integer qty) {
         this.qty = qty;
     }
 

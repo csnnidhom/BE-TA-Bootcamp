@@ -92,7 +92,7 @@ public class ProductService implements IService<Product> {
             LoggingFile.logException("Product Service","Update failed"+ RequestCapture.allRequest(request),e, OtherConfig.getEnableLog());
             return GlobalResponse.failedToUpdate("P04CC013",request);
         }
-        return GlobalResponse.savedSuccessfully(request);
+        return GlobalResponse.updateSuccessfully(request);
     }
 
     @Override

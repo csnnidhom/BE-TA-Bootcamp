@@ -1,5 +1,6 @@
 package com.backend.inventaris.controller;
 
+import com.backend.inventaris.dto.validation.ValProductDTO;
 import com.backend.inventaris.dto.validation.ValTransactionDTO;
 import com.backend.inventaris.service.TransactionService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,10 +18,17 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @PostMapping("/create/transaction-sell-or-buy")
+    @PostMapping("/create")
     public ResponseEntity<Object> createTransactionSellOrBuy(@Valid @RequestBody ValTransactionDTO valTransactionDTO,
                                          HttpServletRequest request) {
         return transactionService.create(transactionService.converToEntity(valTransactionDTO), request);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Object> update(@Valid @PathVariable Long id,
+                                         @RequestBody ValTransactionDTO valTransactionDTO,
+                                         HttpServletRequest request){
+        return transactionService.update(id,transactionService.converToEntity(valTransactionDTO), request);
     }
 
     @PutMapping("/delete/{id}")
