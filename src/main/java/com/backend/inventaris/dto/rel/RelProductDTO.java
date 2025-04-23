@@ -1,19 +1,18 @@
 package com.backend.inventaris.dto.rel;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public class RelMeasureDTO {
+public class RelProductDTO {
     @NotNull
     @NotBlank
     private Long id;
 
-    @JsonProperty("name_measure")
+    @JsonProperty("name_product")
     @NotNull
     @NotBlank
-    private String nameMeasure;
+    private String nameProduct;
 
     public Long getId() {
         return id;
@@ -23,11 +22,11 @@ public class RelMeasureDTO {
         this.id = id;
     }
 
-    public String getNameMeasure() {
-        return nameMeasure;
+    public String getNameProduct() {
+        return nameProduct;
     }
 
-    public void setNameMeasure(String nameMeasure) {
-        this.nameMeasure = nameMeasure;
+    public void setNameProduct(String nameProduct) {
+        this.nameProduct = nameProduct;
     }
 }

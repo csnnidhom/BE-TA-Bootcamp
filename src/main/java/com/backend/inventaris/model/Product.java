@@ -18,11 +18,12 @@ public class Product {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "id_measure",foreignKey = @ForeignKey(name = "fk-to-measure"))
+    @JoinColumn(name = "id_measure",foreignKey = @ForeignKey(name = "fk-to-measure"), nullable = false)
     private Measure measure;
 
     private Boolean isDeleted=false;
 
+    @Column(name = "price", nullable = false)
     private Long price;
 
     @Column(name = "wam_stock")

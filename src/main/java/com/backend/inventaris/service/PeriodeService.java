@@ -48,11 +48,19 @@ public class PeriodeService implements IService<Periode> {
         Map<String,Object> mapToken = GlobalFunction.extractToken(request);
         try {
             periode.setName(periode.getName());
+            periode.setActive(true);
             periode.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
             periodeRepo.save(periode);
+
+            Optional<Periode> periodeOptional = periodeRepo.findFirstByActive(true);
+            Periode activePeriode = periodeOptional.get();
+            if (!activePeriode.getId().equals(periode.getId())) {
+                activePeriode.setActive(false);
+                periodeRepo.save(activePeriode);
+            }
         }catch (Exception e) {
             LoggingFile.logException("Periode Service","Create failed"+ RequestCapture.allRequest(request),e, OtherConfig.getEnableLog());
-            return GlobalResponse.failedToSave("P02CC001",request);
+            return GlobalResponse.failedToSave("P02CC002",request);
         }
         return GlobalResponse.savedSuccessfully(request);
     }
@@ -66,11 +74,19 @@ public class PeriodeService implements IService<Periode> {
             if (!periodeOptional.isPresent()){
                 return GlobalResponse.dataNotFound("P02CC011",request);
             }
+            Optional<Periode> periodeOptionalDeactive = periodeRepo.findFirstByActive(true);
+            Periode activePeriode = periodeOptionalDeactive.get();
+            if (!activePeriode.getId().equals(periode.getId())) {
+                activePeriode.setActive(false);
+                periodeRepo.save(activePeriode);
+            }
 
             Periode nextPeriode = periodeOptional.get();
             nextPeriode.setName(periode.getName());
+            nextPeriode.setActive(periode.getActive());
             nextPeriode.setUpdatedBy(Long.valueOf(mapToken.get("userId").toString()));
             periodeRepo.save(nextPeriode);
+
         }catch (Exception e){
             LoggingFile.logException("Periode Service","Update failed"+RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
             return GlobalResponse.failedToUpdate("P02CC012",request);

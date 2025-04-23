@@ -55,13 +55,12 @@ public class ProductService implements IService<Product> {
             if (!measureOptional.isPresent()) {
                 return GlobalResponse.dataRelasiNotFound("P04CC001", request);
             }
-            Product productNext = new Product();
-            productNext.setName(product.getName());
-            productNext.setMeasure(product.getMeasure());
-            productNext.setPrice(product.getPrice());
-            productNext.setWamStock(product.getWamStock());
-            productNext.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
-            productRepo.save(productNext);
+            product.setName(product.getName());
+            product.setMeasure(product.getMeasure());
+            product.setPrice(product.getPrice());
+            product.setWamStock(product.getWamStock());
+            product.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
+            productRepo.save(product);
         } catch (Exception e) {
             LoggingFile.logException("Product Service","Create failed"+ RequestCapture.allRequest(request),e, OtherConfig.getEnableLog());
             return GlobalResponse.failedToSave("P04CC002",request);
@@ -106,10 +105,10 @@ public class ProductService implements IService<Product> {
                 return GlobalResponse.dataNotFound("P04CC021",request);
             }
 
-            Product newProduct = productOptional.get();
-            newProduct.setDeleted(true);
-            newProduct.setUpdatedBy(Long.valueOf(mapToken.get("userId").toString()));
-            productRepo.save(newProduct);
+            Product nextProduct = productOptional.get();
+            nextProduct.setDeleted(true);
+            nextProduct.setUpdatedBy(Long.valueOf(mapToken.get("userId").toString()));
+            productRepo.save(nextProduct);
         }catch (Exception e) {
             LoggingFile.logException("Product Service","Delete failed"+ RequestCapture.allRequest(request),e, OtherConfig.getEnableLog());
             return GlobalResponse.deletedFailed("P04CC022",request);
