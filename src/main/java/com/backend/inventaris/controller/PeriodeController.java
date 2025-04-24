@@ -30,6 +30,11 @@ public class PeriodeController {
         return periodeService.findAll(pageable,request);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getById(@Valid @PathVariable Long id,HttpServletRequest request) {
+        return periodeService.findById(id,request);
+    }
+
     @PutMapping("/update/{id}")
     public ResponseEntity<Object> update(@PathVariable Long id,
                                          @Valid @RequestBody ValDataMasterDTO valDataMasterDTO,

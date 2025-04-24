@@ -3,6 +3,7 @@ package com.backend.inventaris.dto.response;
 public class FindAllDataMasterDTO {
     private Long id;
     private String name;
+    private Boolean active;
     private Boolean isDeleted;
 
     public Boolean getDeleted() {
@@ -27,5 +28,13 @@ public class FindAllDataMasterDTO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }

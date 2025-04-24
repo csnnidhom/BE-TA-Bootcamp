@@ -3,11 +3,11 @@ package com.backend.inventaris.service;
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
 import com.backend.inventaris.dto.response.FindAllDataMasterDTO;
+import com.backend.inventaris.dto.response.FindPeriodeDTO;
 import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Periode;
-import com.backend.inventaris.model.Product;
 import com.backend.inventaris.repo.PeriodeRepo;
 import com.backend.inventaris.repo.ProductRepo;
 import com.backend.inventaris.security.RequestCapture;
@@ -138,7 +138,17 @@ public class PeriodeService implements IService<Periode> {
 
     @Override
     public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
-        return null;
+        Optional<Periode> optionalPeriode = null;
+        try {
+            optionalPeriode = periodeRepo.findById(id);
+            if (!optionalPeriode.isPresent()) {
+                return GlobalResponse.dataNotFound("P02CC051", request);
+            }
+        } catch (Exception e) {
+            LoggingFile.logException("Periode Service", "Get by Id error" + RequestCapture.allRequest(request), e, OtherConfig.getEnableLog());
+            return GlobalResponse.error("P02CC052", request);
+        }
+        return GlobalResponse.dataWasFound(modelMapper.map(optionalPeriode.get(), FindPeriodeDTO.class), request);
     }
 
     private List<FindAllDataMasterDTO> convertToFindAllDTO(List<Periode> periodes) {
@@ -147,6 +157,7 @@ public class PeriodeService implements IService<Periode> {
             FindAllDataMasterDTO findAllDataMasterDTO = new FindAllDataMasterDTO();
             findAllDataMasterDTO.setId(periode.getId());
             findAllDataMasterDTO.setName(periode.getName());
+            findAllDataMasterDTO.setActive(periode.getActive());
             findAllDataMasterDTO.setDeleted(periode.getDeleted());
             lt.add(findAllDataMasterDTO);
         }
