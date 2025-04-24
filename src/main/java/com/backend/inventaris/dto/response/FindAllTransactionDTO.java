@@ -1,9 +1,12 @@
 package com.backend.inventaris.dto.response;
 
+import com.backend.inventaris.enumm.TypeTransaction;
+
 public class FindAllTransactionDTO {
     private Long id;
     private FindProductDTO product;
     private Long qty;
+    private TypeTransaction typeTransaction;
     private FindWarehouseDTO warehouse;
     private FindPeriodeDTO periode;
 
@@ -45,5 +48,13 @@ public class FindAllTransactionDTO {
 
     public void setPeriode(FindPeriodeDTO periode) {
         this.periode = periode;
+    }
+
+    public TypeTransaction getTypeTransaction() {
+        return typeTransaction;
+    }
+
+    public void setTypeTransaction(TypeTransaction typeTransaction) {
+        this.typeTransaction = typeTransaction;
     }
 }

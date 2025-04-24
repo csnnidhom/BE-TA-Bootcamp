@@ -191,7 +191,7 @@ public class TransactionService implements IService<Transaction> {
     public ResponseEntity<Object> findByParam(Pageable pageable, TypeTransaction typeTransaction, HttpServletRequest request) {
         Page<Transaction> page = null;
         List<Transaction> list = null;
-        page = transactionRepo.findAllByTypeTransaction(pageable, typeTransaction);
+        page = transactionRepo.findAllByTypeTransaction(pageable,typeTransaction);
 
         list = page.getContent();
         List<FindAllTransactionDTO> lt = convertToFindAllDTO(list);
@@ -201,7 +201,17 @@ public class TransactionService implements IService<Transaction> {
 
     @Override
     public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
-        return null;
+        Optional<Transaction> optionalTransaction = null;
+        try {
+            optionalTransaction = transactionRepo.findById(id);
+            if (!optionalTransaction.isPresent()){
+                return GlobalResponse.dataNotFound("T05CC051",request);
+            }
+        }catch (Exception e){
+            LoggingFile.logException("Transaction Service","Get by Id error" +RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
+            return GlobalResponse.error("T05CC052",request);
+        }
+        return GlobalResponse.dataWasFound(modelMapper.map(optionalTransaction.get(), FindAllTransactionDTO.class), request);
     }
 
     private List<FindAllTransactionDTO> convertToFindAllDTO(List<Transaction> transactions) {
@@ -210,6 +220,7 @@ public class TransactionService implements IService<Transaction> {
             FindAllTransactionDTO findAllTransactionDTO = new FindAllTransactionDTO();
             findAllTransactionDTO.setId(transaction.getId());
             findAllTransactionDTO.setProduct(convertProductToResponseDTO(transaction.getProduct()));
+            findAllTransactionDTO.setTypeTransaction(transaction.getTypeTransaction());
             findAllTransactionDTO.setQty(transaction.getQty());
             findAllTransactionDTO.setWarehouse(convertWarehouseToResponseDTO(transaction.getWarehouse()));
             findAllTransactionDTO.setPeriode(convertPeriodeToResponseDTO(transaction.getPeriode()));

@@ -49,4 +49,10 @@ public class TransactionController {
         return transactionService.findByParam(pageable,typeTransaction,request);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getById(@Valid @PathVariable Long id,HttpServletRequest request) {
+        return transactionService.findById(id,request);
+    }
+
+
 }
