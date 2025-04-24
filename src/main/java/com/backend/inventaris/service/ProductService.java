@@ -60,7 +60,7 @@ public class ProductService implements IService<Product> {
             product.setName(product.getName());
             product.setMeasure(product.getMeasure());
             product.setPrice(product.getPrice());
-            product.setWamStock(product.getWamStock());
+            product.setWarnStock(product.getWarnStock());
             product.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
             productRepo.save(product);
         } catch (Exception e) {
@@ -87,7 +87,7 @@ public class ProductService implements IService<Product> {
             productNext.setName(product.getName());
             productNext.setMeasure(product.getMeasure());
             productNext.setPrice(product.getPrice());
-            productNext.setWamStock(product.getWamStock());
+            productNext.setWarnStock(product.getWarnStock());
             productNext.setUpdatedBy(Long.valueOf(mapToken.get("userId").toString()));
             productRepo.save(productNext);
         } catch (Exception e) {
@@ -135,6 +135,21 @@ public class ProductService implements IService<Product> {
         return null;
     }
 
+    @Override
+    public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
+        Optional<Product> optionalProduct = null;
+        try {
+            optionalProduct = productRepo.findById(id);
+            if (!optionalProduct.isPresent()){
+                return GlobalResponse.dataNotFound("P04CC051",request);
+            }
+        }catch (Exception e){
+            LoggingFile.logException("Product Service","Get by Id error" +RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
+            return GlobalResponse.error("P04CC052",request);
+        }
+        return GlobalResponse.dataWasFound(modelMapper.map(optionalProduct.get(), FindProductDTO.class), request);
+    }
+
     private List<FindProductDTO> convertToFindAllDTO(List<Product> products) {
         List<FindProductDTO> lt = new ArrayList<>();
         for (Product product : products) {
@@ -144,7 +159,7 @@ public class ProductService implements IService<Product> {
             findProductDTO.setMeasure(convertMeasureToResponseDTO(product.getMeasure()));
             findProductDTO.setPrice(product.getPrice());
             findProductDTO.setDeleted(product.getDeleted());
-            findProductDTO.setWamStock(product.getWamStock());
+            findProductDTO.setWarnStock(product.getWarnStock());
             lt.add(findProductDTO);
         }
         return lt;

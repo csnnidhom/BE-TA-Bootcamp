@@ -115,6 +115,11 @@ public class MeasureService implements IService<Measure> {
         return null;
     }
 
+    @Override
+    public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
+        return null;
+    }
+
     private List<FindAllDataMasterDTO> convertToFindAllDTO(List<Measure> measures) {
         List<FindAllDataMasterDTO> lt = new ArrayList<>();
         for (Measure measure : measures) {

@@ -26,9 +26,14 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<Object> getAllWarehouses(HttpServletRequest request) {
+    public ResponseEntity<Object> getAll(HttpServletRequest request) {
         Pageable pageable = PageRequest.of(0, OtherConfig.getPageDefault(), Sort.by("id"));
         return productService.findAll(pageable,request);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getById(@Valid @PathVariable Long id,HttpServletRequest request) {
+        return productService.findById(id,request);
     }
 
     @PutMapping("/update/{id}")

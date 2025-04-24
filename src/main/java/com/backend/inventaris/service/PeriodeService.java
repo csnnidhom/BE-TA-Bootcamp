@@ -7,7 +7,9 @@ import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Periode;
+import com.backend.inventaris.model.Product;
 import com.backend.inventaris.repo.PeriodeRepo;
+import com.backend.inventaris.repo.ProductRepo;
 import com.backend.inventaris.security.RequestCapture;
 import com.backend.inventaris.util.GlobalFunction;
 import com.backend.inventaris.util.LoggingFile;
@@ -43,6 +45,8 @@ public class PeriodeService implements IService<Periode> {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ProductRepo productRepo;
 
     @Override
     public ResponseEntity<Object> create(Periode periode, HttpServletRequest request) {
@@ -129,6 +133,11 @@ public class PeriodeService implements IService<Periode> {
 
     @Override
     public ResponseEntity<Object> findByParam(Pageable pageable, TypeTransaction typeTransaction, HttpServletRequest request) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
         return null;
     }
 

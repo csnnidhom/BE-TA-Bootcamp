@@ -22,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -200,6 +199,11 @@ public class TransactionService implements IService<Transaction> {
                 request);
     }
 
+    @Override
+    public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
+        return null;
+    }
+
     private List<FindAllTransactionDTO> convertToFindAllDTO(List<Transaction> transactions) {
         List<FindAllTransactionDTO> lt = new ArrayList<>();
         for (Transaction transaction : transactions) {
@@ -224,7 +228,7 @@ public class TransactionService implements IService<Transaction> {
         findProductDTO.setMeasure(convertMeasureToResponseDTO(product.getMeasure()));
         findProductDTO.setPrice(product.getPrice());
         findProductDTO.setDeleted(product.getDeleted());
-        findProductDTO.setWamStock(product.getWamStock());
+        findProductDTO.setWarnStock(product.getWarnStock());
         return findProductDTO;
     }
 

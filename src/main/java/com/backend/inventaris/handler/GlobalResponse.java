@@ -71,7 +71,7 @@ public class GlobalResponse {
                 null,null,request);
     }
 
-    public static ResponseEntity<Object> terjadiKesalahan(String errorCode,HttpServletRequest request){
+    public static ResponseEntity<Object> error(String errorCode,HttpServletRequest request){
         return new ResponseHandler().handleResponse("Terjadi Kesalahan Pada Server",
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 null,errorCode,request);

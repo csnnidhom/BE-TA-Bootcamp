@@ -8,8 +8,8 @@ public class FindProductDTO {
     @JsonProperty("measure")
     private FindMeasureDTO measure;
     private Long price;
-    @JsonProperty("wam_stock")
-    private int wamStock;
+    @JsonProperty("warn_stock")
+    private Long warnStock;
     private Boolean isDeleted;
 
     public Long getId() {
@@ -44,12 +44,12 @@ public class FindProductDTO {
         this.price = price;
     }
 
-    public int getWamStock() {
-        return wamStock;
+    public Long getWarnStock() {
+        return warnStock;
     }
 
-    public void setWamStock(int wamStock) {
-        this.wamStock = wamStock;
+    public void setWarnStock(Long warnStock) {
+        this.warnStock = warnStock;
     }
 
     public Boolean getDeleted() {

@@ -3,8 +3,6 @@ package com.backend.inventaris.dto.validation;
 import com.backend.inventaris.dto.rel.RelMeasureDTO;
 import com.backend.inventaris.util.ConstantsMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
@@ -20,8 +18,8 @@ public class ValProductDTO {
     private Long price;
 
     @NotNull
-    @JsonProperty("wam_stock")
-    private int wamStock;
+    @JsonProperty("warn_stock")
+    private Long warnStock;
 
     public String getName() {
         return name;
@@ -47,11 +45,11 @@ public class ValProductDTO {
         this.price = price;
     }
 
-    public int getWamStock() {
-        return wamStock;
+    public Long getWarnStock() {
+        return warnStock;
     }
 
-    public void setWamStock(int wamStock) {
-        this.wamStock = wamStock;
+    public void setWarnStock(Long warnStock) {
+        this.warnStock = warnStock;
     }
 }

@@ -26,8 +26,8 @@ public class Product {
     @Column(name = "price", nullable = false)
     private Long price;
 
-    @Column(name = "wam_stock")
-    private int wamStock;
+    @Column(name = "warn_stock")
+    private Long warnStock;
 
     @Column(name = "created_by", nullable = false, updatable = false)
     private Long createdBy;
@@ -83,12 +83,12 @@ public class Product {
         this.price = price;
     }
 
-    public int getWamStock() {
-        return wamStock;
+    public Long getWarnStock() {
+        return warnStock;
     }
 
-    public void setWamStock(int wamStock) {
-        this.wamStock = wamStock;
+    public void setWarnStock(Long warnStock) {
+        this.warnStock = warnStock;
     }
 
     public Long getCreatedBy() {

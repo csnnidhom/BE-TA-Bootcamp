@@ -114,6 +114,11 @@ public class WarehouseService implements IService<Warehouse> {
         return null;
     }
 
+    @Override
+    public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
+        return null;
+    }
+
     private List<FindAllDataMasterDTO> convertToFindAllDTO(List<Warehouse> warehouses) {
         List<FindAllDataMasterDTO> lt = new ArrayList<>();
         for (Warehouse warehouse : warehouses) {
