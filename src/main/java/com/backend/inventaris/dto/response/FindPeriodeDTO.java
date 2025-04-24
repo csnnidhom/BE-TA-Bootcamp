@@ -8,6 +8,8 @@ public class FindPeriodeDTO {
     @JsonProperty("name_periode")
     private String namePeriode;
 
+    private Boolean active;
+
     public Long getId() {
         return id;
     }
@@ -22,5 +24,13 @@ public class FindPeriodeDTO {
 
     public void setNamePeriode(String namePeriode) {
         this.namePeriode = namePeriode;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 }
