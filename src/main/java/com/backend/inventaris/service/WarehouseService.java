@@ -126,7 +126,7 @@ public class WarehouseService implements IService<Warehouse> {
                 return GlobalResponse.dataNotFound("WH01CC051",request);
             }
         }catch (Exception e){
-            LoggingFile.logException("Product Service","Get by Id error" +RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
+            LoggingFile.logException("Warehouse Service","Get by Id error" +RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
             return GlobalResponse.error("WH01CC052",request);
         }
         return GlobalResponse.dataWasFound(modelMapper.map(optionalWarehouse.get(), FindWarehouseDTO.class), request);

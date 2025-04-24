@@ -3,6 +3,8 @@ package com.backend.inventaris.service;
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
 import com.backend.inventaris.dto.response.FindAllDataMasterDTO;
+import com.backend.inventaris.dto.response.FindMeasureDTO;
+import com.backend.inventaris.dto.response.FindProductDTO;
 import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
@@ -117,7 +119,17 @@ public class MeasureService implements IService<Measure> {
 
     @Override
     public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
-        return null;
+        Optional<Measure> optionalMeasure = null;
+        try {
+            optionalMeasure = measureRepo.findById(id);
+            if (!optionalMeasure.isPresent()){
+                return GlobalResponse.dataNotFound("M03CC051",request);
+            }
+        }catch (Exception e){
+            LoggingFile.logException("Measure Service","Get by Id error" +RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
+            return GlobalResponse.error("M03CC052",request);
+        }
+        return GlobalResponse.dataWasFound(modelMapper.map(optionalMeasure.get(), FindMeasureDTO.class), request);
     }
 
     private List<FindAllDataMasterDTO> convertToFindAllDTO(List<Measure> measures) {
