@@ -3,9 +3,12 @@ package com.backend.inventaris.service;
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
 import com.backend.inventaris.dto.response.FindAllDataMasterDTO;
+import com.backend.inventaris.dto.response.FindProductDTO;
+import com.backend.inventaris.dto.response.FindWarehouseDTO;
 import com.backend.inventaris.dto.validation.ValDataMasterDTO;
 import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
+import com.backend.inventaris.model.Product;
 import com.backend.inventaris.model.Warehouse;
 import com.backend.inventaris.repo.WarehouseRepo;
 import com.backend.inventaris.security.RequestCapture;
@@ -116,7 +119,17 @@ public class WarehouseService implements IService<Warehouse> {
 
     @Override
     public ResponseEntity<Object> findById(Long id, HttpServletRequest request) {
-        return null;
+        Optional<Warehouse> optionalWarehouse = null;
+        try {
+            optionalWarehouse = warehouseRepo.findById(id);
+            if (!optionalWarehouse.isPresent()){
+                return GlobalResponse.dataNotFound("WH01CC051",request);
+            }
+        }catch (Exception e){
+            LoggingFile.logException("Product Service","Get by Id error" +RequestCapture.allRequest(request),e,OtherConfig.getEnableLog());
+            return GlobalResponse.error("WH01CC052",request);
+        }
+        return GlobalResponse.dataWasFound(modelMapper.map(optionalWarehouse.get(), FindWarehouseDTO.class), request);
     }
 
     private List<FindAllDataMasterDTO> convertToFindAllDTO(List<Warehouse> warehouses) {
