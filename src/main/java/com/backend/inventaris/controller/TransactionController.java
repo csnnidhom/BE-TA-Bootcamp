@@ -1,11 +1,16 @@
 package com.backend.inventaris.controller;
 
+import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.dto.validation.ValProductDTO;
 import com.backend.inventaris.dto.validation.ValTransactionDTO;
+import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.service.TransactionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,5 +42,11 @@ public class TransactionController {
         return transactionService.delete(id,request);
     }
 
+    @GetMapping("/all/{type}")
+    public ResponseEntity<Object> getAll(@Valid @PathVariable (value = "type") TypeTransaction typeTransaction,
+                                         HttpServletRequest request) {
+        Pageable pageable = PageRequest.of(0, OtherConfig.getPageDefault(), Sort.by("id"));
+        return transactionService.findByParam(pageable,typeTransaction,request);
+    }
 
 }

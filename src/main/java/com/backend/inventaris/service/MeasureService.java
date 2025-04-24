@@ -2,8 +2,9 @@ package com.backend.inventaris.service;
 
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
-import com.backend.inventaris.dto.FindAllDTO;
+import com.backend.inventaris.dto.response.FindAllDataMasterDTO;
 import com.backend.inventaris.dto.validation.ValDataMasterDTO;
+import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Measure;
 import com.backend.inventaris.repo.MeasureRepo;
@@ -104,19 +105,24 @@ public class MeasureService implements IService<Measure> {
         List<Measure> list = null;
         page = measureRepo.findAllByIsDeleted(false,pageable);
         list = page.getContent();
-        List<FindAllDTO> lt = convertToFindAllDTO(list);
+        List<FindAllDataMasterDTO> lt = convertToFindAllDTO(list);
         return GlobalResponse.dataWasFound(transformPagination.transformPagination(lt,page,null,null),
                 request);
     }
 
-    private List<FindAllDTO> convertToFindAllDTO(List<Measure> measures) {
-        List<FindAllDTO> lt = new ArrayList<>();
+    @Override
+    public ResponseEntity<Object> findByParam(Pageable pageable, TypeTransaction typeTransaction, HttpServletRequest request) {
+        return null;
+    }
+
+    private List<FindAllDataMasterDTO> convertToFindAllDTO(List<Measure> measures) {
+        List<FindAllDataMasterDTO> lt = new ArrayList<>();
         for (Measure measure : measures) {
-            FindAllDTO findAllDTO = new FindAllDTO();
-            findAllDTO.setId(measure.getId());
-            findAllDTO.setName(measure.getName());
-            findAllDTO.setDeleted(measure.getDeleted());
-            lt.add(findAllDTO);
+            FindAllDataMasterDTO findAllDataMasterDTO = new FindAllDataMasterDTO();
+            findAllDataMasterDTO.setId(measure.getId());
+            findAllDataMasterDTO.setName(measure.getName());
+            findAllDataMasterDTO.setDeleted(measure.getDeleted());
+            lt.add(findAllDataMasterDTO);
         }
         return lt;
     }

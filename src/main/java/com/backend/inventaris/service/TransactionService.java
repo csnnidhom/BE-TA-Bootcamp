@@ -2,13 +2,11 @@ package com.backend.inventaris.service;
 
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
+import com.backend.inventaris.dto.response.*;
 import com.backend.inventaris.dto.validation.ValTransactionDTO;
 import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
-import com.backend.inventaris.model.Periode;
-import com.backend.inventaris.model.Product;
-import com.backend.inventaris.model.Transaction;
-import com.backend.inventaris.model.Warehouse;
+import com.backend.inventaris.model.*;
 import com.backend.inventaris.repo.*;
 import com.backend.inventaris.security.RequestCapture;
 import com.backend.inventaris.util.GlobalFunction;
@@ -18,11 +16,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -41,6 +43,9 @@ public class TransactionService implements IService<Transaction> {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private ProductService productService;
 
     @Autowired
     private MeasureRepo measureRepo;
@@ -76,7 +81,7 @@ public class TransactionService implements IService<Transaction> {
             //cek periode
             Optional<Periode> periodeOptional= periodeRepo.findFirstByActive(true);
             if (!periodeOptional.isPresent()) {
-                return GlobalResponse.dataRelasiNotFound("T05CC002", request);
+                return GlobalResponse.dataRelasiNotFound("T05CC003", request);
             }
 
             if (transaction.getPrice()==null){
@@ -84,6 +89,7 @@ public class TransactionService implements IService<Transaction> {
                 transaction.setQty(transaction.getQty());
                 transaction.setTypeTransaction(TypeTransaction.SO);
                 transaction.setProduct(transaction.getProduct());
+                transaction.setPrice(0L);
                 transaction.setWarehouse(transaction.getWarehouse());
                 transaction.setPeriode(periodeOptional.get());
                 transaction.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
@@ -172,7 +178,84 @@ public class TransactionService implements IService<Transaction> {
 
     @Override
     public ResponseEntity<Object> findAll(Pageable pageable, HttpServletRequest request) {
-        return null;
+        Page<Transaction> page = null;
+        List<Transaction> list = null;
+        page = transactionRepo.findAll(pageable);
+
+        list = page.getContent();
+        List<FindAllTransactionDTO> lt = convertToFindAllDTO(list);
+        return GlobalResponse.dataWasFound(transformPagination.transformPagination(lt,page,null,null),
+                request);
+    }
+
+    @Override
+    public ResponseEntity<Object> findByParam(Pageable pageable, TypeTransaction typeTransaction, HttpServletRequest request) {
+        Page<Transaction> page = null;
+        List<Transaction> list = null;
+        page = transactionRepo.findAllByTypeTransaction(pageable, typeTransaction);
+
+        list = page.getContent();
+        List<FindAllTransactionDTO> lt = convertToFindAllDTO(list);
+        return GlobalResponse.dataWasFound(transformPagination.transformPagination(lt,page,null,null),
+                request);
+    }
+
+    private List<FindAllTransactionDTO> convertToFindAllDTO(List<Transaction> transactions) {
+        List<FindAllTransactionDTO> lt = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            FindAllTransactionDTO findAllTransactionDTO = new FindAllTransactionDTO();
+            findAllTransactionDTO.setId(transaction.getId());
+            findAllTransactionDTO.setProduct(convertProductToResponseDTO(transaction.getProduct()));
+            findAllTransactionDTO.setQty(transaction.getQty());
+            findAllTransactionDTO.setWarehouse(convertWarehouseToResponseDTO(transaction.getWarehouse()));
+            findAllTransactionDTO.setPeriode(convertPeriodeToResponseDTO(transaction.getPeriode()));
+            lt.add(findAllTransactionDTO);
+        }
+        return lt;
+    }
+
+    private FindProductDTO convertProductToResponseDTO(Product product) {
+        if (product == null) {
+            return null;
+        }
+        FindProductDTO findProductDTO = new FindProductDTO();
+        findProductDTO.setId(product.getId());
+        findProductDTO.setName(product.getName());
+        findProductDTO.setMeasure(convertMeasureToResponseDTO(product.getMeasure()));
+        findProductDTO.setPrice(product.getPrice());
+        findProductDTO.setDeleted(product.getDeleted());
+        findProductDTO.setWamStock(product.getWamStock());
+        return findProductDTO;
+    }
+
+    private FindPeriodeDTO convertPeriodeToResponseDTO(Periode periode) {
+        if (periode == null) {
+            return null;
+        }
+        FindPeriodeDTO findPeriodeDTO = new FindPeriodeDTO();
+        findPeriodeDTO.setId(periode.getId());
+        findPeriodeDTO.setNamePeriode(periode.getName());
+        return findPeriodeDTO;
+    }
+
+    private FindMeasureDTO convertMeasureToResponseDTO(Measure measure) {
+        if (measure == null) {
+            return null;
+        }
+        FindMeasureDTO findMeasureDTO = new FindMeasureDTO();
+        findMeasureDTO.setId(measure.getId());
+        findMeasureDTO.setNameMeasure(measure.getName());
+        return findMeasureDTO;
+    }
+
+    private FindWarehouseDTO convertWarehouseToResponseDTO(Warehouse warehouse) {
+        if (warehouse == null) {
+            return null;
+        }
+        FindWarehouseDTO findWarehouseDTO = new FindWarehouseDTO();
+        findWarehouseDTO.setId(warehouse.getId());
+        findWarehouseDTO.setNameWarehouse(warehouse.getName());
+        return findWarehouseDTO;
     }
 
     public Transaction converToEntity(ValTransactionDTO valTransactionDTO) {

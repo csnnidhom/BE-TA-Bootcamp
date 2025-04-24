@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Pattern;
 
 public class ValDataMasterDTO {
 
-    @Pattern(regexp = "^[\\w\\s]{5,100}$",message = ConstantsMessage.VAL_NAME)
+    @Pattern(regexp = "^[\\w\\s]{3,50}$",message = ConstantsMessage.VAL_NAME)
     @NotNull
     @NotBlank
     private String name;

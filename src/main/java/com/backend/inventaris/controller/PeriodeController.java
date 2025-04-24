@@ -39,7 +39,6 @@ public class PeriodeController {
 
     @PutMapping("/delete/{id}")
     public ResponseEntity<Object> delete(@PathVariable Long id,
-                                         @Valid @RequestBody ValDataMasterDTO valDataMasterDTO,
                                          HttpServletRequest request) {
         return periodeService.delete(id, request);
     }

@@ -2,8 +2,9 @@ package com.backend.inventaris.service;
 
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
-import com.backend.inventaris.dto.FindAllDTO;
+import com.backend.inventaris.dto.response.FindAllDataMasterDTO;
 import com.backend.inventaris.dto.validation.ValDataMasterDTO;
+import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Warehouse;
 import com.backend.inventaris.repo.WarehouseRepo;
@@ -103,19 +104,24 @@ public class WarehouseService implements IService<Warehouse> {
         List<Warehouse> list = null;
         page = warehouseRepo.findAllByIsDeleted(false,pageable);
         list = page.getContent();
-        List<FindAllDTO> lt = convertToFindAllDTO(list);
+        List<FindAllDataMasterDTO> lt = convertToFindAllDTO(list);
         return GlobalResponse.dataWasFound(transformPagination.transformPagination(lt,page,null,null),
                 request);
     }
 
-    private List<FindAllDTO> convertToFindAllDTO(List<Warehouse> warehouses) {
-        List<FindAllDTO> lt = new ArrayList<>();
+    @Override
+    public ResponseEntity<Object> findByParam(Pageable pageable, TypeTransaction typeTransaction, HttpServletRequest request) {
+        return null;
+    }
+
+    private List<FindAllDataMasterDTO> convertToFindAllDTO(List<Warehouse> warehouses) {
+        List<FindAllDataMasterDTO> lt = new ArrayList<>();
         for (Warehouse warehouse : warehouses) {
-            FindAllDTO findAllDTO = new FindAllDTO();
-            findAllDTO.setId(warehouse.getId());
-            findAllDTO.setName(warehouse.getName());
-            findAllDTO.setDeleted(warehouse.getDeleted());
-            lt.add(findAllDTO);
+            FindAllDataMasterDTO findAllDataMasterDTO = new FindAllDataMasterDTO();
+            findAllDataMasterDTO.setId(warehouse.getId());
+            findAllDataMasterDTO.setName(warehouse.getName());
+            findAllDataMasterDTO.setDeleted(warehouse.getDeleted());
+            lt.add(findAllDataMasterDTO);
         }
         return lt;
     }

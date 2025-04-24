@@ -1,6 +1,6 @@
-package com.backend.inventaris.dto;
+package com.backend.inventaris.dto.response;
 
-public class FindAllDTO {
+public class FindAllDataMasterDTO {
     private Long id;
     private String name;
     private Boolean isDeleted;

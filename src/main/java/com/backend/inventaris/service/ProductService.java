@@ -2,8 +2,10 @@ package com.backend.inventaris.service;
 
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
-import com.backend.inventaris.dto.FindAllDTO;
+import com.backend.inventaris.dto.response.FindProductDTO;
+import com.backend.inventaris.dto.response.FindMeasureDTO;
 import com.backend.inventaris.dto.validation.ValProductDTO;
+import com.backend.inventaris.enumm.TypeTransaction;
 import com.backend.inventaris.handler.GlobalResponse;
 import com.backend.inventaris.model.Measure;
 import com.backend.inventaris.model.Product;
@@ -123,21 +125,39 @@ public class ProductService implements IService<Product> {
         List<Product> list = null;
         page = productRepo.findAllByIsDeleted(false,pageable);
         list = page.getContent();
-        List<FindAllDTO> lt = convertToFindAllDTO(list);
+        List<FindProductDTO> lt = convertToFindAllDTO(list);
         return GlobalResponse.dataWasFound(transformPagination.transformPagination(lt,page,null,null),
                 request);
     }
 
-    private List<FindAllDTO> convertToFindAllDTO(List<Product> products) {
-        List<FindAllDTO> lt = new ArrayList<>();
+    @Override
+    public ResponseEntity<Object> findByParam(Pageable pageable, TypeTransaction typeTransaction, HttpServletRequest request) {
+        return null;
+    }
+
+    private List<FindProductDTO> convertToFindAllDTO(List<Product> products) {
+        List<FindProductDTO> lt = new ArrayList<>();
         for (Product product : products) {
-            FindAllDTO findAllDTO = new FindAllDTO();
-            findAllDTO.setId(product.getId());
-            findAllDTO.setName(product.getName());
-            findAllDTO.setDeleted(product.getDeleted());
-            lt.add(findAllDTO);
+            FindProductDTO findProductDTO = new FindProductDTO();
+            findProductDTO.setId(product.getId());
+            findProductDTO.setName(product.getName());
+            findProductDTO.setMeasure(convertMeasureToResponseDTO(product.getMeasure()));
+            findProductDTO.setPrice(product.getPrice());
+            findProductDTO.setDeleted(product.getDeleted());
+            findProductDTO.setWamStock(product.getWamStock());
+            lt.add(findProductDTO);
         }
         return lt;
+    }
+
+    private FindMeasureDTO convertMeasureToResponseDTO(Measure measure) {
+        if (measure == null) {
+            return null;
+        }
+        FindMeasureDTO findMeasureDTO = new FindMeasureDTO();
+        findMeasureDTO.setId(measure.getId());
+        findMeasureDTO.setNameMeasure(measure.getName());
+        return findMeasureDTO;
     }
 
     public Product converToEntity(ValProductDTO valProductDTO) {

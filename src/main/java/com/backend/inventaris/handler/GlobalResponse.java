@@ -83,6 +83,12 @@ public class GlobalResponse {
                 object,null,request);
     }
 
+    public static ResponseEntity<Object> loginSuccess(Object object,HttpServletRequest request){
+        return new ResponseHandler().handleResponse("Berhasil Login",
+                HttpStatus.OK,
+                object,null,request);
+    }
+
     public static ResponseEntity<Object> formatHarusExcel(String errorCode ,HttpServletRequest request){
         return new ResponseHandler().handleResponse("Format Harus Excel",
                 HttpStatus.BAD_REQUEST,

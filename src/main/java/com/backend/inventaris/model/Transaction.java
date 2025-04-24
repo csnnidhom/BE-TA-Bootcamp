@@ -23,7 +23,7 @@ public class Transaction {
     private Long price;
 
     @Column(name = "qty")
-    private Integer qty;
+    private Long qty;
 
     @Enumerated(EnumType.STRING)
     private TypeTransaction typeTransaction;
@@ -80,11 +80,11 @@ public class Transaction {
         this.price = price;
     }
 
-    public Integer getQty() {
+    public Long getQty() {
         return qty;
     }
 
-    public void setQty(Integer qty) {
+    public void setQty(Long qty) {
         this.qty = qty;
     }
 
