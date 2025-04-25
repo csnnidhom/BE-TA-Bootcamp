@@ -1,14 +1,24 @@
 package com.backend.inventaris.dto.response;
 
+import com.backend.inventaris.dto.rel.FindTotalStockDTO;
 import com.backend.inventaris.enumm.TypeTransaction;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 public class FindAllTransactionDTO {
     private Long id;
     private FindProductDTO product;
     private Long qty;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate date;
+    @JsonProperty("type_transaction")
     private TypeTransaction typeTransaction;
     private FindWarehouseDTO warehouse;
     private FindPeriodeDTO periode;
+    @JsonProperty("last_stock")
+    private FindTotalStockDTO totalStock;
 
     public Long getId() {
         return id;
@@ -56,5 +66,21 @@ public class FindAllTransactionDTO {
 
     public void setTypeTransaction(TypeTransaction typeTransaction) {
         this.typeTransaction = typeTransaction;
+    }
+
+    public FindTotalStockDTO getTotalStock() {
+        return totalStock;
+    }
+
+    public void setTotalStock(FindTotalStockDTO totalStock) {
+        this.totalStock = totalStock;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 }

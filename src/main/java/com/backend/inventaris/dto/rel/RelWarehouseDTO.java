@@ -5,13 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class RelWarehouseDTO {
-    @NotNull
-    @NotBlank
     private Long id;
 
     @JsonProperty("name_warehouse")
-    @NotNull
-    @NotBlank
     private String nameWarehouse;
 
     public Long getId() {

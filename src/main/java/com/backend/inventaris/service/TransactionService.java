@@ -2,6 +2,7 @@ package com.backend.inventaris.service;
 
 import com.backend.inventaris.config.OtherConfig;
 import com.backend.inventaris.core.IService;
+import com.backend.inventaris.dto.rel.FindTotalStockDTO;
 import com.backend.inventaris.dto.response.*;
 import com.backend.inventaris.dto.validation.ValTransactionDTO;
 import com.backend.inventaris.enumm.TypeTransaction;
@@ -15,6 +16,8 @@ import com.backend.inventaris.util.TransformPagination;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,6 +40,7 @@ import static java.time.LocalDate.now;
 @Service
 @Transactional
 public class TransactionService implements IService<Transaction> {
+    private static final Logger log = LoggerFactory.getLogger(TransactionService.class);
     @Autowired
     private TransactionRepo transactionRepo;
 
@@ -57,8 +61,12 @@ public class TransactionService implements IService<Transaction> {
 
     @Autowired
     private TransformPagination transformPagination;
+
     @Autowired
     private WarehouseRepo warehouseRepo;
+
+    @Autowired
+    private TotalStockRepo totalStockRepo;
 
     @Override
     public ResponseEntity<Object> create(Transaction transaction, HttpServletRequest request) {
@@ -84,6 +92,11 @@ public class TransactionService implements IService<Transaction> {
             }
 
             if (transaction.getPrice()==null){
+                TotalStock totalStock = new TotalStock();
+                totalStock.setValue(transaction.getQty());
+                totalStock.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
+                totalStockRepo.save(totalStock);
+
                 transaction.setDate(LocalDate.now());
                 transaction.setQty(transaction.getQty());
                 transaction.setTypeTransaction(TypeTransaction.SO);
@@ -91,8 +104,16 @@ public class TransactionService implements IService<Transaction> {
                 transaction.setPrice(0L);
                 transaction.setWarehouse(transaction.getWarehouse());
                 transaction.setPeriode(periodeOptional.get());
+                transaction.setTotalStock(totalStock);
                 transaction.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
+                transactionRepo.save(transaction);
+
             }else {
+                Optional<Transaction> transactionOptional= transactionRepo.findByProductIdAndTypeTransaction(transaction.getProduct().getId(), TypeTransaction.SO);
+                if (!transactionOptional.isPresent()) {
+                    return GlobalResponse.dataRelasiNotFound("T05CC004", request);
+                }
+
                 transaction.setDate(transaction.getDate());
                 transaction.setPrice(transaction.getPrice());
                 transaction.setQty(transaction.getTypeTransaction()==TypeTransaction.S ? transaction.getQty() * -1 : transaction.getQty());
@@ -100,14 +121,26 @@ public class TransactionService implements IService<Transaction> {
                 transaction.setProduct(transaction.getProduct());
                 transaction.setWarehouse(transaction.getWarehouse());
                 transaction.setPeriode(periodeOptional.get());
+                transaction.setTotalStock(transactionOptional.get().getTotalStock());
                 transaction.setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
-            }
+                transactionRepo.save(transaction);
 
-            transactionRepo.save(transaction);
+                Long Buy = transactionOptional.get().getTotalStock().getValue() + transaction.getQty();
+                Long Sell = transactionOptional.get().getTotalStock().getValue() - ((transaction.getQty())*-1);
+
+                if (transaction.getTypeTransaction().equals(TypeTransaction.B)) {
+                    transactionOptional.get().getTotalStock().setValue(Buy);
+                    transactionOptional.get().setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
+                }else if (transaction.getTypeTransaction().equals(TypeTransaction.S)) {
+                    transactionOptional.get().getTotalStock().setValue(Sell);
+                    transactionOptional.get().setCreatedBy(Long.valueOf(mapToken.get("userId").toString()));
+                }
+                totalStockRepo.save(transactionOptional.get().getTotalStock());
+            }
 
         }catch (Exception e) {
             LoggingFile.logException("Transaction Service","Create failed"+ RequestCapture.allRequest(request),e, OtherConfig.getEnableLog());
-            return GlobalResponse.failedToSave("T05CC003",request);
+            return GlobalResponse.failedToSave("T05CC006",request);
         }
 
         return GlobalResponse.savedSuccessfully(request);
@@ -120,7 +153,7 @@ public class TransactionService implements IService<Transaction> {
         try {
             Optional<Transaction> transactionOptional = transactionRepo.findById(id);
             if (!transactionOptional.isPresent()) {
-                return GlobalResponse.dataNotFound("T05CC001", request);
+                return GlobalResponse.dataNotFound("T05CC011", request);
             }
 
             Optional<Periode> periodeOptional= periodeRepo.findFirstByActive(true);
@@ -149,7 +182,7 @@ public class TransactionService implements IService<Transaction> {
 
         }catch (Exception e) {
             LoggingFile.logException("Transaction Service","Update failed"+ RequestCapture.allRequest(request),e, OtherConfig.getEnableLog());
-            return GlobalResponse.failedToUpdate("T05CC002",request);
+            return GlobalResponse.failedToUpdate("T05CC012",request);
         }
 
         return GlobalResponse.updateSuccessfully(request);
@@ -219,14 +252,28 @@ public class TransactionService implements IService<Transaction> {
         for (Transaction transaction : transactions) {
             FindAllTransactionDTO findAllTransactionDTO = new FindAllTransactionDTO();
             findAllTransactionDTO.setId(transaction.getId());
+            findAllTransactionDTO.setDate(transaction.getDate());
             findAllTransactionDTO.setProduct(convertProductToResponseDTO(transaction.getProduct()));
             findAllTransactionDTO.setTypeTransaction(transaction.getTypeTransaction());
             findAllTransactionDTO.setQty(transaction.getQty());
+            findAllTransactionDTO.setTypeTransaction(transaction.getTypeTransaction());
             findAllTransactionDTO.setWarehouse(convertWarehouseToResponseDTO(transaction.getWarehouse()));
             findAllTransactionDTO.setPeriode(convertPeriodeToResponseDTO(transaction.getPeriode()));
+            findAllTransactionDTO.setTotalStock(convertTotalStockToResponseDTO(transaction.getTotalStock()));
+
             lt.add(findAllTransactionDTO);
         }
         return lt;
+    }
+
+    private FindTotalStockDTO convertTotalStockToResponseDTO(TotalStock totalStock) {
+        if (totalStock == null) {
+            return null;
+        }
+        FindTotalStockDTO findTotalStockDTO = new FindTotalStockDTO();
+        findTotalStockDTO.setId(totalStock.getId());
+        findTotalStockDTO.setValue(totalStock.getValue());
+        return findTotalStockDTO;
     }
 
     private FindProductDTO convertProductToResponseDTO(Product product) {
@@ -249,6 +296,7 @@ public class TransactionService implements IService<Transaction> {
         }
         FindPeriodeDTO findPeriodeDTO = new FindPeriodeDTO();
         findPeriodeDTO.setId(periode.getId());
+        findPeriodeDTO.setActive(periode.getActive());
         findPeriodeDTO.setNamePeriode(periode.getName());
         return findPeriodeDTO;
     }

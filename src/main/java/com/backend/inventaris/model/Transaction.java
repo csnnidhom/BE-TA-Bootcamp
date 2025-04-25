@@ -32,13 +32,17 @@ public class Transaction {
     @JoinColumn(name = "id_product",foreignKey = @ForeignKey(name = "fk-to-product"), nullable = false)
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_warehouse",foreignKey = @ForeignKey(name = "fk-to-warehouse"), nullable = false)
     private Warehouse warehouse;
 
     @ManyToOne
     @JoinColumn(name = "id_periode",foreignKey = @ForeignKey(name = "fk-to-periode"), nullable = false)
     private Periode periode;
+
+    @ManyToOne
+    @JoinColumn(name = "id_total_stock",foreignKey = @ForeignKey(name = "fk-to-total-stock"))
+    private TotalStock totalStock;
 
     private Boolean isDeleted=false;
 
@@ -55,6 +59,7 @@ public class Transaction {
     @UpdateTimestamp
     @Column(name = "update_at")
     private LocalDateTime updateAt;
+
 
     public Long getId() {
         return id;
@@ -158,5 +163,13 @@ public class Transaction {
 
     public void setDeleted(Boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public TotalStock getTotalStock() {
+        return totalStock;
+    }
+
+    public void setTotalStock(TotalStock totalStock) {
+        this.totalStock = totalStock;
     }
 }

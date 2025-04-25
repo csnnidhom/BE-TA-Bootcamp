@@ -15,19 +15,19 @@ import javax.sql.DataSource;
 @Configuration
 public class MainConfig {
 
-//    @Autowired
-//    private Environment env;
-//
-//    @Primary
-//    @Bean
-//    public DataSource getDataSource() {
-//        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
-//        dataSourceBuilder.url(Crypto.performDecrypt(env.getProperty("spring.datasource.url")));
-//        dataSourceBuilder.username(Crypto.performDecrypt(env.getProperty("spring.datasource.username")));
-//        dataSourceBuilder.password(Crypto.performDecrypt(env.getProperty("spring.datasource.password")));
-//        dataSourceBuilder.driverClassName(env.getProperty("spring.datasource.driver-class-name"));
-//        return dataSourceBuilder.build();
-//    }
+    @Autowired
+    private Environment env;
+
+    @Primary
+    @Bean
+    public DataSource getDataSource() {
+        DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+        dataSourceBuilder.url(Crypto.performDecrypt(env.getProperty("spring.datasource.url")));
+        dataSourceBuilder.username(Crypto.performDecrypt(env.getProperty("spring.datasource.username")));
+        dataSourceBuilder.password(Crypto.performDecrypt(env.getProperty("spring.datasource.password")));
+        dataSourceBuilder.driverClassName(env.getProperty("spring.datasource.driver-class-name"));
+        return dataSourceBuilder.build();
+    }
     
     @Bean
     public ModelMapper getModelMapper() {

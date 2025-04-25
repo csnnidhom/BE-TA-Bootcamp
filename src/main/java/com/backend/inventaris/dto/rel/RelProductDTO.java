@@ -10,8 +10,6 @@ public class RelProductDTO {
     private Long id;
 
     @JsonProperty("name_product")
-    @NotNull
-    @NotBlank
     private String nameProduct;
 
     public Long getId() {

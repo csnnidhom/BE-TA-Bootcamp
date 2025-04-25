@@ -27,7 +27,6 @@ public class ValTransactionDTO {
     @JsonProperty("product")
     private RelProductDTO relProductDTO;
 
-    @NotNull(message = ConstantsMessage.VAL_RELASI)
     @JsonProperty("warehouse")
     private RelWarehouseDTO relWarehouseDTO;
 

@@ -23,8 +23,8 @@ public class BcryptImpl {
     
     public static void main(String[] args) {
 //        String strUserName = "bagas123Bagas@123";
-        String strUsereEmail = "admin";
-        String strPassword = "admin";
+        String strUsereEmail = "user";
+        String strPassword = "user";
         System.out.println(hash(strUsereEmail + strPassword));
         System.out.println(verifyHash(strUsereEmail + strPassword,"$2a$11$/vTVoUxu4dEJeK3iDNEOAuaqrBS4Zy5PAoGw8MDvDLWrqpsjeW9Pu"));
     }
